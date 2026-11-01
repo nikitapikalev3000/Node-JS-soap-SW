@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions
+  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:tns="http://localhost:8000/cbr-proxy"
+  targetNamespace="http://localhost:8000/cbr-proxy">
+
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://localhost:8000/cbr-proxy"
+                elementFormDefault="qualified">
+      <xsd:element name="getValutes">
+        <xsd:complexType><xsd:sequence/></xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getValutesResponse">
+        <xsd:complexType><xsd:sequence>
+          <xsd:element name="getValutesResult" type="xsd:string"/>
+        </xsd:sequence></xsd:complexType>
+      </xsd:element>
+
+      <xsd:element name="getValute">
+        <xsd:complexType><xsd:sequence>
+          <xsd:element name="code" type="xsd:string"/>
+          <xsd:element name="fromDate" type="xsd:dateTime"/>
+          <xsd:element name="toDate" type="xsd:dateTime"/>
+        </xsd:sequence></xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getValuteResponse">
+        <xsd:complexType><xsd:sequence>
+          <xsd:element name="getValuteResult" type="xsd:string"/>
+        </xsd:sequence></xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+
+  <wsdl:message name="getValutesIn">
+    <wsdl:part name="parameters" element="tns:getValutes"/>
+  </wsdl:message>
+  <wsdl:message name="getValutesOut">
+    <wsdl:part name="parameters" element="tns:getValutesResponse"/>
+  </wsdl:message>
+  <wsdl:message name="getValuteIn">
+    <wsdl:part name="parameters" element="tns:getValute"/>
+  </wsdl:message>
+  <wsdl:message name="getValuteOut">
+    <wsdl:part name="parameters" element="tns:getValuteResponse"/>
+  </wsdl:message>
+
+  <wsdl:portType name="CbrProxySoap">
+    <wsdl:operation name="getValutes">
+      <wsdl:input message="tns:getValutesIn"/>
+      <wsdl:output message="tns:getValutesOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="getValute">
+      <wsdl:input message="tns:getValuteIn"/>
+      <wsdl:output message="tns:getValuteOut"/>
+    </wsdl:operation>
+  </wsdl:portType>
+
+  <wsdl:binding name="CbrProxySoap" type="tns:CbrProxySoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"
+                  style="document"/>
+    <wsdl:operation name="getValutes">
+      <soap:operation soapAction="http://localhost:8000/cbr-proxy/getValutes"/>
+      <wsdl:input><soap:body use="literal"/></wsdl:input>
+      <wsdl:output><soap:body use="literal"/></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getValute">
+      <soap:operation soapAction="http://localhost:8000/cbr-proxy/getValute"/>
+      <wsdl:input><soap:body use="literal"/></wsdl:input>
+      <wsdl:output><soap:body use="literal"/></wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+
+  <wsdl:service name="CbrProxy">
+    <wsdl:port name="CbrProxySoap" binding="tns:CbrProxySoap">
+      <soap:address location="http://localhost:8000/soap"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
